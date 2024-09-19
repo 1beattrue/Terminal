@@ -50,6 +50,7 @@ import java.util.Locale
 import kotlin.math.roundToInt
 
 private const val MINIMAL_VISIBLE_BARS_COUNT = 20
+private const val MAXIMUM_VISIBLE_BARS_COUNT = 228
 
 
 @Composable
@@ -198,7 +199,12 @@ private fun Chart(
     val currentState = terminalState.value
     val transformableState = rememberTransformableState { zoomChange, panChange, _ ->
         val visibleBarsCount = (currentState.visibleBarsCount / zoomChange).roundToInt()
-            .coerceIn(MINIMAL_VISIBLE_BARS_COUNT, currentState.barList.size)
+            .coerceIn(
+                MINIMAL_VISIBLE_BARS_COUNT, minOf(
+                    currentState.barList.size,
+                    MAXIMUM_VISIBLE_BARS_COUNT
+                )
+            )
 
         val scrolledBy = (currentState.scrolledBy + panChange.x)
             .coerceAtLeast(0f)
@@ -340,7 +346,7 @@ private fun DrawScope.drawTimeDelimiter(
     val nameOfMonth = calendar.getDisplayName(Calendar.MONTH, Calendar.SHORT, Locale.getDefault())
     val text = when (timeFrame) {
         TimeFrame.MIN_5, TimeFrame.MIN_15 -> {
-            String.format("%02d:00", hours)
+            String.format(Locale.getDefault(), "%02d:00", hours)
         }
 
         TimeFrame.MIN_30, TimeFrame.HOUR_1 -> {
