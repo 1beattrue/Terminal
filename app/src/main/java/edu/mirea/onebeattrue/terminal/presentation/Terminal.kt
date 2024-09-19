@@ -6,13 +6,21 @@ import androidx.compose.foundation.gestures.rememberTransformableState
 import androidx.compose.foundation.gestures.transformable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.rounded.Refresh
 import androidx.compose.material3.AssistChip
 import androidx.compose.material3.AssistChipDefaults
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
+import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.State
@@ -71,24 +79,73 @@ fun Terminal(
 
             TimeFrames(
                 modifier = modifier,
-                selectedFrame = TimeFrame.HOUR_1
-            ) {
-
+                selectedFrame = currentState.timeFrame
+            ) { timeFrame ->
+                viewModel.loadBarList(timeFrame)
             }
         }
 
         TerminalScreenState.Loading -> {
-            Box(
-                modifier = modifier
-                    .fillMaxSize()
-                    .background(Color.Black),
-                contentAlignment = Alignment.Center
-            ) {
-                CircularProgressIndicator()
-            }
+            Loading(modifier = modifier)
+        }
+
+        TerminalScreenState.Failure -> {
+            Failure(
+                modifier = modifier,
+                onReload = {
+                    viewModel.loadBarList()
+                }
+            )
         }
 
         TerminalScreenState.Initial -> {}
+    }
+}
+
+@Composable
+private fun Failure(
+    modifier: Modifier = Modifier,
+    onReload: () -> Unit
+) {
+    Box(
+        modifier = modifier
+            .fillMaxSize()
+            .background(Color.Black),
+        contentAlignment = Alignment.Center
+    ) {
+        Column(
+            verticalArrangement = Arrangement.spacedBy(16.dp),
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            Text(
+                text = stringResource(id = R.string.failure),
+                color = Color.White
+            )
+            OutlinedButton(
+                onClick = { onReload() },
+                colors = ButtonDefaults.outlinedButtonColors(
+                    contentColor = Color.White
+                )
+            ) {
+                Icon(imageVector = Icons.Rounded.Refresh, contentDescription = null)
+                Spacer(modifier = Modifier.width(4.dp))
+                Text(text = stringResource(id = R.string.reload))
+            }
+        }
+    }
+}
+
+@Composable
+private fun Loading(
+    modifier: Modifier = Modifier
+) {
+    Box(
+        modifier = modifier
+            .fillMaxSize()
+            .background(Color.Black),
+        contentAlignment = Alignment.Center
+    ) {
+        CircularProgressIndicator()
     }
 }
 

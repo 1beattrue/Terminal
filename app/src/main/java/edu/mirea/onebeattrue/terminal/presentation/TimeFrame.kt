@@ -1,5 +1,11 @@
 package edu.mirea.onebeattrue.terminal.presentation
 
-enum class TimeFrame {
-    MIN_5, MIN_15, MIN_30, HOUR_1, DAY_1
+enum class TimeFrame(
+    val value: String
+) {
+    MIN_5("5/minute"),
+    MIN_15("15/minute"),
+    MIN_30("30/minute"),
+    HOUR_1("1/hour"),
+    DAY_1("1/day")
 }

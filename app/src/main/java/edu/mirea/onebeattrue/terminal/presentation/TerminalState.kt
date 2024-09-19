@@ -12,7 +12,7 @@ import kotlin.math.roundToInt
 @Parcelize
 data class TerminalState(
     val barList: List<Bar>,
-    val visibleBarsCount: Int = 100,
+    val visibleBarsCount: Int = 50,
     val terminalWidth: Float = 1f,
     val terminalHeight: Float = 1f,
     var scrolledBy: Float = 0f,
