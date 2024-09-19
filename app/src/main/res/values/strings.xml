@@ -4,7 +4,6 @@
     <string name="timeframe_15_minutes">M15</string>
     <string name="timeframe_30_minutes">M30</string>
     <string name="timeframe_1_hour">H1</string>
-    <string name="timeframe_1_day">D1</string>
     <string name="failure">Something went wrong…</string>
     <string name="reload">Reload</string>
 </resources>

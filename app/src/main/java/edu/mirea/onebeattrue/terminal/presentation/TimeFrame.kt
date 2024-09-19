@@ -6,6 +6,5 @@ enum class TimeFrame(
     MIN_5("5/minute"),
     MIN_15("15/minute"),
     MIN_30("30/minute"),
-    HOUR_1("1/hour"),
-    DAY_1("1/day")
+    HOUR_1("1/hour")
 }
